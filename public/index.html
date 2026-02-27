@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mini Voice Room</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 16px; }
+    .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    button { padding:8px 12px; cursor:pointer; }
+    code { background:#f2f2f2; padding:2px 6px; border-radius:6px; }
+    ul { padding-left: 18px; }
+
+    .layout { display:grid; grid-template-columns: 1fr 320px; gap:16px; margin-top:12px; }
+    .card { border:1px solid #ddd; border-radius:12px; padding:12px; }
+    .videos { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px; }
+    video { width:100%; border-radius:12px; background:#000; }
+    #messages { height: 360px; overflow:auto; border:1px solid #eee; border-radius:12px; padding:8px; }
+    .msg { padding:6px 8px; border-bottom:1px solid #f0f0f0; }
+    .msg small { color:#666; }
+    #msgRow { display:flex; gap:8px; margin-top:8px; }
+    #msgInput { flex:1; padding:8px; border-radius:10px; border:1px solid #ddd; }
+  </style>
+</head>
+<body>
+  <h2>通話ルーム: <code id="room"></code></h2>
+
+  <div class="row">
+    <button id="btnJoin">入室</button>
+    <button id="btnMute" disabled>ミュート</button>
+    <button id="btnShare" disabled>画面共有</button>
+    <span id="status">未接続</span>
+  </div>
+
+  <div class="layout">
+    <div class="card">
+      <h3>画面共有 / 映像</h3>
+      <div class="videos" id="videos">
+        <div>
+          <div><small>自分（共有中だけ表示）</small></div>
+          <video id="localVideo" autoplay playsinline muted></video>
+        </div>
+      </div>
+
+      <h3 style="margin-top:16px;">参加者</h3>
+      <ul id="members"></ul>
+    </div>
+
+    <div class="card">
+      <h3>チャット</h3>
+      <div id="messages"></div>
+      <div id="msgRow">
+        <input id="msgInput" placeholder="メッセージ" />
+        <button id="btnSend">送信</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/client.js"></script>
+</body>
+</html>
